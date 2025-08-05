@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>樱花心语 | 心雨测试版表白墙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #fff8f9;
+            padding-bottom: 50px;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 樱花背景 */
+        .sakura-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1520277739336-16c92a33c03f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        /* 飘落樱花样式 */
+        .sakura {
+            position: absolute;
+            background-color: #ffddee;
+            border-radius: 50% 50% 20% 20%;
+            opacity: 0.7;
+            animation: fall linear infinite;
+            z-index: 0;
+            box-shadow: 0 0 10px rgba(255, 221, 238, 0.8);
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translate(0, -10px) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(calc(100vw * var(--x-offset)), 100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        header {
+            background: linear-gradient(135deg, #ff85b3, #ffacc6);
+            color: white;
+            text-align: center;
+            padding: 35px 0;
+            box-shadow: 0 3px 15px rgba(255, 133, 179, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* 表单区域 */
+        .form-section {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 30px;
+            border-radius: 18px;
+            margin: 30px auto;
+            max-width: 600px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+            backdrop-filter: blur(8px);
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #d64d7b;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #ffddee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff85b3;
+            box-shadow: 0 0 0 4px rgba(255, 133, 179, 0.2);
+        }
+        
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        
+        button {
+            background-color: #ff85b3;
+            color: white;
+            border: none;
+            padding: 13px 35px;
+            border-radius: 30px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background-color: #d64d7b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 133, 179, 0.4);
+        }
+        
+        /* 表白内容展示区 */
+        .posts-section {
+            margin-top: 50px;
+        }
+        
+        .posts-section h2 {
+            text-align: center;
+            color: #d64d7b;
+            margin-bottom: 35px;
+            font-size: 2rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .posts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .post-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid #ff85b3;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+        }
+        
+        .post-sender {
+            font-weight: bold;
+            color: #d64d7b;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .post-receiver {
+            color: #666;
+            margin-bottom: 18px;
+            font-style: italic;
+            font-size: 1rem;
+            padding-left: 5px;
+            border-left: 3px solid #ffddee;
+        }
+        
+        .post-content {
+            color: #333;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+        
+        .post-date {
+            text-align: right;
+            color: #aaa;
+            font-size: 0.9rem;
+            padding-top: 10px;
+            border-top: 1px dashed #ffddee;
+        }
+        
+        /* 音乐控制器 */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 133, 179, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 133, 179, 0.4);
+        }
+        
+        .music-icon {
+            color: #ff85b3;
+            font-size: 24px;
+        }
+    </style>
+    <!-- 引入字体图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="sakura-bg"></div>
+    <header>
+        <h1>樱花心语|心雨测试版表白墙</h1>
+        <p class="subtitle">把藏在心底的话，说给TA听</p>
+    </header>
+    
+    <div class="container">
+        <section class="form-section">
+            <form id="confessionForm">
+                <div class="form-group">
+                    <label for="sender">你的名字</label>
+                    <input type="text" id="sender" placeholder="例如：小凯" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="receiver">TA的名字</label>
+                    <input type="text" id="receiver" placeholder="例如：小欣" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">想对TA说的话</label>
+                    <textarea id="content" placeholder="第一次见到你时，我的心跳就乱了节拍..." required></textarea>
+                </div>
+                
+                <button type="submit">发布我的心意</button>
+            </form>
+        </section>
+        
+        <section class="posts-section">
+            <h2>那些藏不住的心意</h2>
+            <div class="posts-container" id="postsContainer">
+                <!-- 示例表白卡片 -->
+                <div class="post-card">
+                    <div class="post-sender">星辰</div>
+                    <div class="post-receiver">致 月亮</div>
+                    <div class="post-content">每次抬头看月亮，都会想起你的眼睛。希望以后的每一个夜晚，都能和你一起数星星，直到天亮。</div>
+                    <div class="post-date">2023-04-15</div>
+                </div>
+                <div class="post-card">
+                    <div class="post-sender">夏天</div>
+                    <div class="post-receiver">致 晚风</div>
+                    <div class="post-content">你的出现，像夏天的晚风一样温柔，吹散了我所有的烦躁。想和你一起，走过无数个四季。</div>
+                    <div class="post-date">2023-04-12</div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- 音乐控制按钮 -->
+    <div class="music-control" id="musicControl">
+        <<i class="fas fa-music music-icon"></</i>
+    </div>
+    
+    <!-- 背景音乐（纯音乐） -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+     您的浏览器不支持音频播放
+    </audio>
+
+    <script>
+        // 生成飘落樱花
+        function createSakura() {
+            const sakura = document.createElement('div');
+            sakura.classList.add('sakura');
+            
+            // 随机大小
+            const size = Math.random() * 12 + 6;
+            sakura.style.width = `${size}px`;
+            sakura.style.height = `${size}px`;
+            
+            // 随机位置
+            sakura.style.left = `${Math.random() * 100}vw`;
+            sakura.style.top = `-20px`;
+            
+            // 随机偏移和动画时间
+            const xOffset = (Math.random() - 0.5) * 0.6; // 左右偏移比例
+            sakura.style.setProperty('--x-offset', xOffset);
+            const duration = Math.random() * 15 + 10; // 10-25秒
+            sakura.style.animationDuration = `${duration}s`;
+            
+            document.body.appendChild(sakura);
+            
+            // 动画结束后移除元素
+            setTimeout(() => {
+                sakura.remove();
+            }, duration * 1000);
+        }
+        
+        // 定时生成樱花
+        setInterval(createSakura, 200);
+        // 初始生成一批樱花
+        for (let i = 0; i < 30; i++) {
+            createSakura();
+        }
+        
+        // 音乐控制
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const musicControl = document.getElementById('musicControl');
+        const musicIcon = document.querySelector('.music-icon');
+        let isPlaying = false;
+        
+        musicControl.addEventListener('click', () => {
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-music');
+            } else {
+                backgroundMusic.play();
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-pause');
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        // 表白墙功能
+        const confessionForm = document.getElementById('confessionForm');
+        const postsContainer = document.getElementById('postsContainer');
+        
+        confessionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const sender = document.getElementById('sender').value;
+            const receiver = document.getElementById('receiver').value;
+            const content = document.getElementById('content').value;
+            
+            // 获取当前日期
+            const date = new Date();
+            const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+            
+            // 创建新表白卡片
+            const postCard = document.createElement('div');
+            postCard.classList.add('post-card');
+            postCard.innerHTML = `
+                <div class="post-sender">${sender}</div>
+                <div class="post-receiver">致 ${receiver}</div>
+                <div class="post-content">${content}</div>
+                <div class="post-date">${formattedDate}</div>
+            `;
+            
+            // 添加到最前面
+            postsContainer.insertBefore(postCard, postsContainer.firstChild);
+            
+            // 重置表单
+            confessionForm.reset();
+            
+            // 提示
+            alert('你的心意已送达～');
+        });
+    </script>
+</body>
+</html>
