@@ -1,400 +1,321 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>樱花心语 | 心雨测试版表白墙</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #fff8f9;
-            padding-bottom: 50px;
-            position: relative;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        /* 樱花背景 */
-        .sakura-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1520277739336-16c92a33c03f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.2;
-            z-index: -1;
-        }
-        
-        /* 飘落樱花样式 */
-        .sakura {
-            position: absolute;
-            background-color: #ffddee;
-            border-radius: 50% 50% 20% 20%;
-            opacity: 0.7;
-            animation: fall linear infinite;
-            z-index: 0;
-            box-shadow: 0 0 10px rgba(255, 221, 238, 0.8);
-        }
-        
-        @keyframes fall {
-            0% {
-                transform: translate(0, -10px) rotate(0deg);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translate(calc(100vw * var(--x-offset)), 100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        header {
-            background: linear-gradient(135deg, #ff85b3, #ffacc6);
-            color: white;
-            text-align: center;
-            padding: 35px 0;
-            box-shadow: 0 3px 15px rgba(255, 133, 179, 0.3);
-            position: relative;
-            z-index: 10;
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 12px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        /* 表单区域 */
-        .form-section {
-            background-color: rgba(255, 255, 255, 0.92);
-            padding: 30px;
-            border-radius: 18px;
-            margin: 30px auto;
-            max-width: 600px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
-            backdrop-filter: blur(8px);
-        }
-        
-        .form-group {
-            margin-bottom: 22px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #d64d7b;
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-        
-        input, textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #ffddee;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #ff85b3;
-            box-shadow: 0 0 0 4px rgba(255, 133, 179, 0.2);
-        }
-        
-        textarea {
-            min-height: 140px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-        
-        button {
-            background-color: #ff85b3;
-            color: white;
-            border: none;
-            padding: 13px 35px;
-            border-radius: 30px;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 0 auto;
-            font-weight: 600;
-        }
-        
-        button:hover {
-            background-color: #d64d7b;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(255, 133, 179, 0.4);
-        }
-        
-        /* 表白内容展示区 */
-        .posts-section {
-            margin-top: 50px;
-        }
-        
-        .posts-section h2 {
-            text-align: center;
-            color: #d64d7b;
-            margin-bottom: 35px;
-            font-size: 2rem;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        
-        .posts-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-        }
-        
-        .post-card {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 4px solid #ff85b3;
-        }
-        
-        .post-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
-        }
-        
-        .post-sender {
-            font-weight: bold;
-            color: #d64d7b;
-            margin-bottom: 8px;
-            font-size: 1.2rem;
-        }
-        
-        .post-receiver {
-            color: #666;
-            margin-bottom: 18px;
-            font-style: italic;
-            font-size: 1rem;
-            padding-left: 5px;
-            border-left: 3px solid #ffddee;
-        }
-        
-        .post-content {
-            color: #333;
-            line-height: 1.7;
-            margin-bottom: 20px;
-            font-size: 1.05rem;
-        }
-        
-        .post-date {
-            text-align: right;
-            color: #aaa;
-            font-size: 0.9rem;
-            padding-top: 10px;
-            border-top: 1px dashed #ffddee;
-        }
-        
-        /* 音乐控制器 */
-        .music-control {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(255, 133, 179, 0.3);
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-        
-        .music-control:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 133, 179, 0.4);
-        }
-        
-        .music-icon {
-            color: #ff85b3;
-            font-size: 24px;
-        }
-    </style>
-    <!-- 引入字体图标 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- 配置Tailwind自定义颜色和字体 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#36CFC9',
+            dark: '#1D2129',
+            light: '#F2F3F5'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <!-- 自定义工具类 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .transition-custom {
+        transition: all 0.3s ease;
+      }
+    }
+  </style>
+  
+  <style>
+    /* 平滑滚动 */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* 导航栏滚动效果 */
+    .nav-scrolled {
+      @apply bg-white/95 shadow-md;
+    }
+  </style>
 </head>
-<body>
-    <div class="sakura-bg"></div>
-    <header>
-        <h1>樱花心语|心雨测试版表白墙</h1>
-        <p class="subtitle">把藏在心底的话，说给TA听</p>
-    </header>
-    
-    <div class="container">
-        <section class="form-section">
-            <form id="confessionForm">
-                <div class="form-group">
-                    <label for="sender">你的名字</label>
-                    <input type="text" id="sender" placeholder="例如：小凯" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="receiver">TA的名字</label>
-                    <input type="text" id="receiver" placeholder="例如：小欣" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="content">想对TA说的话</label>
-                    <textarea id="content" placeholder="第一次见到你时，我的心跳就乱了节拍..." required></textarea>
-                </div>
-                
-                <button type="submit">发布我的心意</button>
-            </form>
-        </section>
-        
-        <section class="posts-section">
-            <h2>那些藏不住的心意</h2>
-            <div class="posts-container" id="postsContainer">
-                <!-- 示例表白卡片 -->
-                <div class="post-card">
-                    <div class="post-sender">星辰</div>
-                    <div class="post-receiver">致 月亮</div>
-                    <div class="post-content">每次抬头看月亮，都会想起你的眼睛。希望以后的每一个夜晚，都能和你一起数星星，直到天亮。</div>
-                    <div class="post-date">2023-04-15</div>
-                </div>
-                <div class="post-card">
-                    <div class="post-sender">夏天</div>
-                    <div class="post-receiver">致 晚风</div>
-                    <div class="post-content">你的出现，像夏天的晚风一样温柔，吹散了我所有的烦躁。想和你一起，走过无数个四季。</div>
-                    <div class="post-date">2023-04-12</div>
-                </div>
-            </div>
-        </section>
-    </div>
-    
-    <!-- 音乐控制按钮 -->
-    <div class="music-control" id="musicControl">
-        <<i class="fas fa-music music-icon"></</i>
-    </div>
-    
-    <!-- 背景音乐（纯音乐） -->
-    <audio id="backgroundMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-     您的浏览器不支持音频播放
-    </audio>
 
-    <script>
-        // 生成飘落樱花
-        function createSakura() {
-            const sakura = document.createElement('div');
-            sakura.classList.add('sakura');
-            
-            // 随机大小
-            const size = Math.random() * 12 + 6;
-            sakura.style.width = `${size}px`;
-            sakura.style.height = `${size}px`;
-            
-            // 随机位置
-            sakura.style.left = `${Math.random() * 100}vw`;
-            sakura.style.top = `-20px`;
-            
-            // 随机偏移和动画时间
-            const xOffset = (Math.random() - 0.5) * 0.6; // 左右偏移比例
-            sakura.style.setProperty('--x-offset', xOffset);
-            const duration = Math.random() * 15 + 10; // 10-25秒
-            sakura.style.animationDuration = `${duration}s`;
-            
-            document.body.appendChild(sakura);
-            
-            // 动画结束后移除元素
-            setTimeout(() => {
-                sakura.remove();
-            }, duration * 1000);
-        }
+<body class="font-inter bg-gray-50 text-dark">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent">
+    <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <a href="#" class="text-2xl font-bold text-primary">John Doe</a>
+      
+      <!-- 桌面导航 -->
+      <ul class="hidden md:flex space-x-8">
+        <li><a href="#about" class="hover:text-primary transition-custom">关于我</a></li>
+        <li><a href="#skills" class="hover:text-primary transition-custom">技能</a></li>
+        <li><a href="#projects" class="hover:text-primary transition-custom">项目</a></li>
+        <li><a href="#contact" class="hover:text-primary transition-custom">联系我</a></li>
+      </ul>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="menu-toggle" class="md:hidden text-dark focus:outline-none">
+        <<i class="fa fa-bars text-2xl"></</i>
+      </button>
+    </nav>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+      <ul class="container mx-auto px-4 py-4 space-y-4">
+        <li><a href="#about" class="block hover:text-primary transition-custom">关于我</a></li>
+        <li><a href="#skills" class="block hover:text-primary transition-custom">技能</a></li>
+        <li><a href="#projects" class="block hover:text-primary transition-custom">项目</a></li>
+        <li><a href="#contact" class="block hover:text-primary transition-custom">联系我</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 英雄区域 -->
+  <section class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-primary/5 to-secondary/5">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+          <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-shadow mb-4">
+            你好，我是 <span class="text-primary">XINYU</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-gray-600 mb-8">前端开发者 & 设计师</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#contact" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-custom shadow-lg hover:shadow-xl">
+              联系我
+            </a>
+            <a href="#projects" class="px-8 py-3 bg-white text-primary border border-primary rounded-lg hover:bg-primary/5 transition-custom">
+              查看作品
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2 flex justify-center">
+          <div class="relative">
+            <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
+              <img src="https://q1.qlogo.cn/g?b=qq&nk=2696639227&s=640" alt="个人照片" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute -bottom-3 -right-3 bg-secondary text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg">
+              <<i class="fa fa-code text-2xl"></</i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关于我 -->
+  <section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">关于我</h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+      </div>
+      
+      <div class="max-w-3xl mx-auto">
+        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+          我是一名充满激情的前端开发者，拥有3年的Web开发经验。我热爱创造美观、交互性强且用户友好的网站和应用程序。（不是）
+        </p>
+        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+          我毕业于计算机科学专业，专注于前端技术栈的学习和实践。我相信良好的用户体验来自于对细节的关注和对用户需求的深刻理解。（也不是）
+        </p>
         
-        // 定时生成樱花
-        setInterval(createSakura, 200);
-        // 初始生成一批樱花
-        for (let i = 0; i < 30; i++) {
-            createSakura();
-        }
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div class="p-4 rounded-lg bg-light">
+            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
+            <p class="text-gray-600">工作年限</p>
+          </div>
+          <div class="p-4 rounded-lg bg-light">
+            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
+            <p class="text-gray-600">完成项目</p>
+          </div>
+          <div class="p-4 rounded-lg bg-light">
+            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
+            <p class="text-gray-600">满意客户</p>
+          </div>
+          <div class="p-4 rounded-lg bg-light">
+            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
+            <p class="text-gray-600">技术认证</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 技能 -->
+  <section id="skills" class="py-20 bg-light">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">我的技能</h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">我没有技能&nbsp;</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- 技术技能 -->
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 flex items-center">
+            <i class="fa fa-code text-primary mr-3"></</i>技术技能
+          </h3>
+          
+          <div class="space-y-6">
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>HTML/CSS</span>
+                <span>0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-primary h-2.5 rounded-full" style="width: 95%"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>JavaScript</span>
+                <span>0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-primary h-2.5 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>React</span>
+                <span>0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-primary h-2.5 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>Tailwind CSS</span>
+                <span>&nbsp;0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="flex justify-between mb-2">
+                <span>Vue.js</span>
+                <span>&nbsp;0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         
-        // 音乐控制
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        const musicControl = document.getElementById('musicControl');
-        const musicIcon = document.querySelector('.music-icon');
-        let isPlaying = false;
+        <!-- 软技能 -->
+        <div>
+          <h3 class="text-2xl font-semibold mb-6 flex items-center">
+            <<i class="fa fa-lightbulb-o text-primary mr-3"></</i>软技能
+          </h3>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
+              <div class="flex items-center mb-2">
+                <<i class="fa fa-users text-secondary mr-2"></</i>
+                <h4 class="font-medium">团队协作</h4>
+              </div>
+              <p class="text-gray-600 text-sm">能够高效地与团队成员合作完成项目目标</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
+              <div class="flex items-center mb-2">
+                <<i class="fa fa-line-chart text-secondary mr-2"></</i>
+                <h4 class="font-medium">问题解决</h4>
+              </div>
+              <p class="text-gray-600 text-sm">快速分析并解决开发过程中遇到的问题</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
+              <div class="flex items-center mb-2">
+                <<i class="fa fa-comments text-secondary mr-2"></</i>
+                <h4 class="font-medium">沟通能力</h4>
+              </div>
+              <p class="text-gray-600 text-sm">清晰表达技术概念，理解客户需求</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
+              <div class="flex items-center mb-2">
+                <<i class="fa fa-clock-o text-secondary mr-2"></</i>
+                <h4 class="font-medium">时间管理</h4>
+              </div>
+              <p class="text-gray-600 text-sm">有效规划时间，确保项目按时交付</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
+              <div class="flex items-center mb-2">
+                <<i class="fa fa-book text-secondary mr-2"></</i>
+                <h4 class="font-medium">持续学习</h4>
+              </div>
+              <p class="text-gray-600 text-sm">不断学习新技术和开发方法</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
+              <div class="flex items-center mb-2">
+                <<i class="fa fa-paint-brush text-secondary mr-2"></</i>
+                <h4 class="font-medium">设计思维</h4>
+              </div>
+              <p class="text-gray-600 text-sm">结合美学与功能性的设计理念</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 项目 -->
+  <section id="projects" class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">我的项目</h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">这些是我最近完成的一些项目，展示了我的技术能力和设计理念</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- 项目1 -->
+        <div class="bg-light rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-custom group">
+          <div class="h-56 overflow-hidden">
+            <img src="https://picsum.photos/seed/project1/600/400" alt="电子商务网站" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">电子商务网站</h3>
+            <p class="text-gray-600 mb-4">一个功能完整的在线购物平台，支持商品展示、购物车、支付等功能。</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">React</span>
+              <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Node.js</span>
+              <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">MongoDB</span>
+            </div>
+            <a href="#" class="inline-flex items-center text-primary hover:text-primary/80 transition-custom">
+              查看详情 <<i class="fa fa-arrow-right ml-2"></</i>
+            </a>
+          </div>
+        </div>
         
-        musicControl.addEventListener('click', () => {
-            if (isPlaying) {
-                backgroundMusic.pause();
-                musicIcon.classList.remove('fa-pause');
-                musicIcon.classList.add('fa-music');
-            } else {
-                backgroundMusic.play();
-                musicIcon.classList.remove('fa-music');
-                musicIcon.classList.add('fa-pause');
-            }
-            isPlaying = !isPlaying;
-        });
-        
-        // 表白墙功能
-        const confessionForm = document.getElementById('confessionForm');
-        const postsContainer = document.getElementById('postsContainer');
-        
-        confessionForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const sender = document.getElementById('sender').value;
-            const receiver = document.getElementById('receiver').value;
-            const content = document.getElementById('content').value;
-            
-            // 获取当前日期
-            const date = new Date();
-            const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-            
-            // 创建新表白卡片
-            const postCard = document.createElement('div');
-            postCard.classList.add('post-card');
-            postCard.innerHTML = `
-                <div class="post-sender">${sender}</div>
-                <div class="post-receiver">致 ${receiver}</div>
-                <div class="post-content">${content}</div>
-                <div class="post-date">${formattedDate}</div>
-            `;
-            
-            // 添加到最前面
-            postsContainer.insertBefore(postCard, postsContainer.firstChild);
-            
-            // 重置表单
-            confessionForm.reset();
-            
-            // 提示
-            alert('你的心意已送达～');
-        });
-    </script>
-</body>
-</html>
+        <!-- 项目2 -->
+        <div class="bg-light rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-custom group">
+          <div class="h-56 overflow-hidden">
+            <img src="https://picsum.photos/seed/project2/600/400" alt="任务管理应用" class="w-full h-full object-cover group-hover:scale-105 transition
