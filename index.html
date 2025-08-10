@@ -1,321 +1,320 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>个人主页</title>
-  <!-- 引入Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- 引入Font Awesome -->
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  
-  <!-- 配置Tailwind自定义颜色和字体 -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#165DFF',
-            secondary: '#36CFC9',
-            dark: '#1D2129',
-            light: '#F2F3F5'
-          },
-          fontFamily: {
-            inter: ['Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      }
-    }
-  </script>
-  
-  <!-- 自定义工具类 -->
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto {
-        content-visibility: auto;
-      }
-      .text-shadow {
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      }
-      .transition-custom {
-        transition: all 0.3s ease;
-      }
-    }
-  </style>
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>心雨的个人面板</title>
+  <!-- 引入字体图标（可选，用于装饰） -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+  />
   <style>
-    /* 平滑滚动 */
-    html {
-      scroll-behavior: smooth;
+    /* 全局重置与基础样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Microsoft YaHei", sans-serif;
     }
-    
-    /* 导航栏滚动效果 */
-    .nav-scrolled {
-      @apply bg-white/95 shadow-md;
+
+    body {
+      background: url("https://picsum.photos/1920/1080?blur=2") no-repeat center/cover;
+      min-height: 100vh;
+      color: #fff;
+      line-height: 1.6;
+      transition: all 0.3s ease;
+    }
+
+    /* 换肤后深色主题示例（可扩展更多主题） */
+    body.dark-skin {
+      background: url("https://picsum.photos/1920/1080?grayscale") no-repeat center/cover;
+      color: #fff;
+    }
+
+    /* 容器布局 */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+    }
+
+    /* 左侧信息栏 */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 16px;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .job {
+      font-size: 16px;
+      color: #000000;
+      margin-bottom: 24px;
+    }
+
+    .location {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: #000000;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    /* 右侧内容区 */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .block {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .block-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #FF99F2;
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .block-title::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: url("ttps://q1.qlogo.cn/g?b=qq&nk=2696639227&s=640")
+        no-repeat center/cover;
+    }
+
+    .block p {
+      margin-bottom: 8px;
+      color: #FF99F2;
+      line-height: 1.8;
+    }
+
+    .github-calendar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 12px;
+    }
+
+    .calendar-day {
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+
+    .calendar-day.active {
+      background: #333;
+    }
+
+    /* 换肤按钮 */
+    .skin-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+    }
+
+    .skin-toggle input {
+      display: none;
+    }
+
+    .skin-toggle label {
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 26px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .skin-toggle label::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 20px;
+      height: 20px;
+      background: #000000;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .skin-toggle input:checked + label {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .skin-toggle input:checked + label::after {
+      left: 27px;
+      background: #FF99F2;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 992px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .name {
+        font-size: 20px;
+      }
+      .job {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
+<body>
+  <!-- 换肤开关 -->
+  <div class="skin-toggle">
+    <input type="checkbox" id="skinSwitch" />
+    <label for="skinSwitch"></label>
+  </div>
 
-<body class="font-inter bg-gray-50 text-dark">
-  <!-- 导航栏 -->
-  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent">
-    <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-      <a href="#" class="text-2xl font-bold text-primary">John Doe</a>
-      
-      <!-- 桌面导航 -->
-      <ul class="hidden md:flex space-x-8">
-        <li><a href="#about" class="hover:text-primary transition-custom">关于我</a></li>
-        <li><a href="#skills" class="hover:text-primary transition-custom">技能</a></li>
-        <li><a href="#projects" class="hover:text-primary transition-custom">项目</a></li>
-        <li><a href="#contact" class="hover:text-primary transition-custom">联系我</a></li>
-      </ul>
-      
-      <!-- 移动端菜单按钮 -->
-      <button id="menu-toggle" class="md:hidden text-dark focus:outline-none">
-        <<i class="fa fa-bars text-2xl"></</i>
-      </button>
-    </nav>
-    
-    <!-- 移动端导航菜单 -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
-      <ul class="container mx-auto px-4 py-4 space-y-4">
-        <li><a href="#about" class="block hover:text-primary transition-custom">关于我</a></li>
-        <li><a href="#skills" class="block hover:text-primary transition-custom">技能</a></li>
-        <li><a href="#projects" class="block hover:text-primary transition-custom">项目</a></li>
-        <li><a href="#contact" class="block hover:text-primary transition-custom">联系我</a></li>
-      </ul>
-    </div>
-  </header>
+  <div class="container">
+    <!-- 左侧信息 -->
+    <aside class="sidebar">
+      <div class="avatar">
+        <!-- 替换为你的头像 -->
+        <img src="https://q1.qlogo.cn/g?b=qq&nk=2696639227&s=640" alt="Avatar" />
+      </div>
+      <h2 class="name">心雨</h2>
+      <p class="job">I am Xinyu </p>
+      <div class="location">
+        <i class="fa fa-map-marker"></</i>
+        <span>河北</span>
+      </div>
+      <div class="tags">
+        <span class="tag">17 years old（17岁）</span>
+        <span class="tag">sizai</span>
+      </div>
+      <div class="tags">
+        <span class="tag">电脑编程</span>
+        <span class="tag">动漫</span>
+        <span class="tag">轻小说</span>
+        <span class="tag">游戏</span>
+        <span class="tag">漫画</span>
+        <span class="tag">音乐</span>
+        <span class="tag">电影</span>
+        <span class="tag">电脑网络</span>
+      </div>
+      <div class="tags">
+        <span class="tag">一叶知秋</span>
+        <span class="tag">艾拉</span>
+        <span class="tag">02</span>
+        <span class="tag">狂三</span>
+        <span class="tag">雪乃</span>
+        <span class="tag">大河</span>
+        <span class="tag">麻衣</span>
+      </div>
+    </aside>
 
-  <!-- 英雄区域 -->
-  <section class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-primary/5 to-secondary/5">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 mb-10 md:mb-0">
-          <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-shadow mb-4">
-            你好，我是 <span class="text-primary">XINYU</span>
-          </h1>
-          <p class="text-xl md:text-2xl text-gray-600 mb-8">前端开发者 & 设计师</p>
-          <div class="flex flex-wrap gap-4">
-            <a href="#contact" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-custom shadow-lg hover:shadow-xl">
-              联系我
-            </a>
-            <a href="#projects" class="px-8 py-3 bg-white text-primary border border-primary rounded-lg hover:bg-primary/5 transition-custom">
-              查看作品
-            </a>
-          </div>
-        </div>
-        <div class="md:w-1/2 flex justify-center">
-          <div class="relative">
-            <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
-              <img src="https://q1.qlogo.cn/g?b=qq&nk=2696639227&s=640" alt="个人照片" class="w-full h-full object-cover">
-            </div>
-            <div class="absolute -bottom-3 -right-3 bg-secondary text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg">
-              <<i class="fa fa-code text-2xl"></</i>
-            </div>
-          </div>
+    <!-- 右侧内容 -->
+    <div class="main">
+      <!-- GitHub 提交统计 -->
+      <div class="block">
+        <h3 class="block-title">2025</h3>
+        <p>这一年要加油哦</p>
+        <p>祝自己学业有成</p>
+        <div class="github-calendar">
+          <!-- 模拟提交数据，可替换为真实数据 -->
+          <div class="calendar-day active"></div>
+          <div class="calendar-day"></div>
+          <div class="calendar-day active"></div>
+          <!-- ... 可重复添加模拟提交状态 -->
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- 关于我 -->
-  <section id="about" class="py-20 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">关于我</h2>
-        <div class="w-20 h-1 bg-primary mx-auto"></div>
+      <!-- 经历模块 -->
+      <div class="block">
+        <h3 class="block-title">联系方式</h3>
+        <p>邮箱</p>
+        <p>2199313286@qq.COM</p>
+        <p>JIAOYOU</p>
       </div>
-      
-      <div class="max-w-3xl mx-auto">
-        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-          我是一名充满激情的前端开发者，拥有3年的Web开发经验。我热爱创造美观、交互性强且用户友好的网站和应用程序。（不是）
-        </p>
-        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
-          我毕业于计算机科学专业，专注于前端技术栈的学习和实践。我相信良好的用户体验来自于对细节的关注和对用户需求的深刻理解。（也不是）
-        </p>
-        
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div class="p-4 rounded-lg bg-light">
-            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
-            <p class="text-gray-600">工作年限</p>
-          </div>
-          <div class="p-4 rounded-lg bg-light">
-            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
-            <p class="text-gray-600">完成项目</p>
-          </div>
-          <div class="p-4 rounded-lg bg-light">
-            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
-            <p class="text-gray-600">满意客户</p>
-          </div>
-          <div class="p-4 rounded-lg bg-light">
-            <p class="text-3xl font-bold text-primary mb-2">没有&nbsp;</p>
-            <p class="text-gray-600">技术认证</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- 技能 -->
-  <section id="skills" class="py-20 bg-light">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">我的技能</h2>
-        <div class="w-20 h-1 bg-primary mx-auto"></div>
-        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">我没有技能&nbsp;</p>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <!-- 技术技能 -->
-        <div>
-          <h3 class="text-2xl font-semibold mb-6 flex items-center">
-            <i class="fa fa-code text-primary mr-3"></</i>技术技能
-          </h3>
-          
-          <div class="space-y-6">
-            <div>
-              <div class="flex justify-between mb-2">
-                <span>HTML/CSS</span>
-                <span>0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="bg-primary h-2.5 rounded-full" style="width: 95%"></div>
-              </div>
-            </div>
-            
-            <div>
-              <div class="flex justify-between mb-2">
-                <span>JavaScript</span>
-                <span>0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="bg-primary h-2.5 rounded-full" style="width: 90%"></div>
-              </div>
-            </div>
-            
-            <div>
-              <div class="flex justify-between mb-2">
-                <span>React</span>
-                <span>0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="bg-primary h-2.5 rounded-full" style="width: 85%"></div>
-              </div>
-            </div>
-            
-            <div>
-              <div class="flex justify-between mb-2">
-                <span>Tailwind CSS</span>
-                <span>&nbsp;0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
-              </div>
-            </div>
-            
-            <div>
-              <div class="flex justify-between mb-2">
-                <span>Vue.js</span>
-                <span>&nbsp;0%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 软技能 -->
-        <div>
-          <h3 class="text-2xl font-semibold mb-6 flex items-center">
-            <<i class="fa fa-lightbulb-o text-primary mr-3"></</i>软技能
-          </h3>
-          
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
-              <div class="flex items-center mb-2">
-                <<i class="fa fa-users text-secondary mr-2"></</i>
-                <h4 class="font-medium">团队协作</h4>
-              </div>
-              <p class="text-gray-600 text-sm">能够高效地与团队成员合作完成项目目标</p>
-            </div>
-            
-            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
-              <div class="flex items-center mb-2">
-                <<i class="fa fa-line-chart text-secondary mr-2"></</i>
-                <h4 class="font-medium">问题解决</h4>
-              </div>
-              <p class="text-gray-600 text-sm">快速分析并解决开发过程中遇到的问题</p>
-            </div>
-            
-            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
-              <div class="flex items-center mb-2">
-                <<i class="fa fa-comments text-secondary mr-2"></</i>
-                <h4 class="font-medium">沟通能力</h4>
-              </div>
-              <p class="text-gray-600 text-sm">清晰表达技术概念，理解客户需求</p>
-            </div>
-            
-            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
-              <div class="flex items-center mb-2">
-                <<i class="fa fa-clock-o text-secondary mr-2"></</i>
-                <h4 class="font-medium">时间管理</h4>
-              </div>
-              <p class="text-gray-600 text-sm">有效规划时间，确保项目按时交付</p>
-            </div>
-            
-            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
-              <div class="flex items-center mb-2">
-                <<i class="fa fa-book text-secondary mr-2"></</i>
-                <h4 class="font-medium">持续学习</h4>
-              </div>
-              <p class="text-gray-600 text-sm">不断学习新技术和开发方法</p>
-            </div>
-            
-            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-custom">
-              <div class="flex items-center mb-2">
-                <<i class="fa fa-paint-brush text-secondary mr-2"></</i>
-                <h4 class="font-medium">设计思维</h4>
-              </div>
-              <p class="text-gray-600 text-sm">结合美学与功能性的设计理念</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- 项目 -->
-  <section id="projects" class="py-20 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">我的项目</h2>
-        <div class="w-20 h-1 bg-primary mx-auto"></div>
-        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">这些是我最近完成的一些项目，展示了我的技术能力和设计理念</p>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- 项目1 -->
-        <div class="bg-light rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-custom group">
-          <div class="h-56 overflow-hidden">
-            <img src="https://picsum.photos/seed/project1/600/400" alt="电子商务网站" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-semibold mb-2">电子商务网站</h3>
-            <p class="text-gray-600 mb-4">一个功能完整的在线购物平台，支持商品展示、购物车、支付等功能。</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">React</span>
-              <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Node.js</span>
-              <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">MongoDB</span>
-            </div>
-            <a href="#" class="inline-flex items-center text-primary hover:text-primary/80 transition-custom">
-              查看详情 <<i class="fa fa-arrow-right ml-2"></</i>
-            </a>
-          </div>
-        </div>
-        
-        <!-- 项目2 -->
-        <div class="bg-light rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-custom group">
-          <div class="h-56 overflow-hidden">
-            <img src="https://picsum.photos/seed/project2/600/400" alt="任务管理应用" class="w-full h-full object-cover group-hover:scale-105 transition
+
+  
+</div></div><script>
+    // 换肤功能逻辑
+    const skinSwitch = document.getElementById("skinSwitch");
+    const body = document.body;
+
+    skinSwitch.addEventListener("change", () => {
+      if (skinSwitch.checked) {
+        body.classList.add("dark-skin");
+      } else {
+        body.classList.remove("dark-skin");
+      }
+    });
+  </script></body>
+</html>
